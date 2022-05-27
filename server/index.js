@@ -13,8 +13,11 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket, connection) => {
     console.log('a user connected');
+    socket.on('disconnect', () => {
+        console.log('user disconnected');
+    })
 })
 
 server.listen(PORT, () => {
-    console.log('listening on port ' +PORT);
+    console.log('listening on port ' + PORT);
 })
