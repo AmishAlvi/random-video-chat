@@ -18,14 +18,14 @@ const ContextProvider = ( {children}) => {
     const connectionRef = useRef();
 
     useEffect(() =>{
-        navigator.mediaDevices.getuserMedia({video: true, audio: false})
+        navigator.mediaDevices.getUserMedia({video: true, audio: false})
             .then((currentStream) => {
                 setStream(currentStream);
                 myVideo.current.srcObject = currentStream;
             })
 
         socket.on('me', (id) => setMe(id))
-    })
+    }, []);
     
     const startCall = () => {
         setCallStarted(true);
@@ -33,17 +33,44 @@ const ContextProvider = ( {children}) => {
         const peer = new Peer({initiator: false, trickle: false, stream})
 
         peer.on('signal', (data) => {
-            socket.emit('startCall', {signal: data});
+            socket.emit('startCall', {signal: data, from: me});
         })
 
         peer.on('stream', (currentStream) => {
             userVideo.current.srcObject = currentStream;
         })
 
+        socket.on('callConnected', (signal) => {
+            setCallStarted(true);
+            peer.signal = signal;
+        })
+
         connectionRef.current = peer;
     }
 
     const leaveCall = () => {
+        setCallEnded(true);
+        setCallStarted(false);
+        connectionRef.current.destroy();
 
+        window.location.reload();
     }
+
+    return (
+        <SocketContext.Provider value={{
+            call,
+            callStarted,
+            callEnded,
+            me,
+            myVideo,
+            userVideo,
+            stream,
+            startCall,
+            leaveCall,
+        }}>
+            {children}
+        </SocketContext.Provider>
+    )
 }
+
+export { ContextProvider, SocketContext };

@@ -11,8 +11,7 @@ const App = () => {
             <Typography variant="h2" align="center"> Random Video Chat App </Typography>
         </AppBar>
         <>
-        {VideoPlayer}
-        {Options}
+        <VideoPlayer />
         </>
     </div>
   )
