@@ -69,7 +69,7 @@ const Sidebar = ({ children }) => {
                 
               ) : (
                 <div>
-                <Typography> Make sure your camera and microphone are working as intended and click start below to start chatting </Typography>
+                <Typography> Make sure your camera and microphone are working as intended and click start below to start chatting, if you do not see your camera after allowing it in the browser and clicking "Start", try refreshing the window or opening the application again in a new tab. </Typography>
                 <Button className={classes.button} variant="contained" color="primary" startIcon={<Phone fontSize="large" />} fullWidth onClick={initiateCall}>
                   Start
                 </Button>

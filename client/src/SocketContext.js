@@ -84,13 +84,13 @@ const ContextProvider = ({ children }) => {
     window.location.reload();
   };
 
-  // useEffect(() => {
-  //   socket.on('otherDisconnected', () => {
-  //     setCallEnded(true);
-  //     connectionRef.current.destroy();
-  //     window.location.reload();
-  //   })
-  // }, []);
+  useEffect(() => {
+    socket.on('otherDisconnected', () => {
+      setCallEnded(true);
+      connectionRef.current.destroy();
+      window.location.reload();
+    })
+  }, []);
 
   return (
     <SocketContext.Provider value={{
