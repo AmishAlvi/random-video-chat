@@ -4,9 +4,9 @@ const cors = require("cors");
 //app.use(cors());
 
 const io = require("socket.io")(server, {
-	cors: {
-		origin: '*',
-	  }
+	// cors: {
+	// 	origin: '*',
+	//   }
 });
 
 const PORT = process.env.PORT || 5000;
