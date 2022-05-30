@@ -27,12 +27,24 @@ const ContextProvider = ({ children }) => {
   const connectionRef = useRef();
 
   useEffect(() => {
-    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-      .then((currentStream) => {
-        setStream(currentStream);
+    const getUserMedia = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({video: true});
+        videoRef.current.srcObject = stream;
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    getUserMedia();
+  }, []);
 
-        myVideo.current.srcObject = currentStream;
-      });
+  useEffect(() => {
+    // navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+    //   .then((currentStream) => {
+    //     setStream(currentStream);
+
+    //     myVideo.current.srcObject = currentStream;
+    //   });
 
     socket.on('me', (id) => setMe(id));
     socket.on('users', (data) => console.log(data));
