@@ -30,6 +30,9 @@ io.on("connection", (socket) => {
 
 	socket.on("disconnect", () => {
         console.log(socket.id + " disconnected");
+		if(usersInCall[socket.id] !== undefined) {
+			io.to(usersInCall[socket.id]).emit('otherDisconnected');
+		}
 	});
 
 	socket.on("endCall", ({from, to}) => {

@@ -70,6 +70,7 @@ const ContextProvider = ({ children }) => {
 
     socket.on('callAccepted', (signal) => {
       setCallAccepted(true);
+      setSearching(false);
 
       peer.signal(signal);
     });

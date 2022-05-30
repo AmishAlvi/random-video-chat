@@ -36,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
     padding: '10px 20px',
     border: '2px solid black',
   },
+  textArea: {
+    margin: 'auto'
+  }
 }));
 
 
@@ -54,18 +57,23 @@ const Sidebar = ({ children }) => {
 
   return (
     <Container className={classes.container}>
-      <Paper elevation={10}>
+      <Paper elevation={10} className={classes.paper}>
         <form noValidate autoComplete="off">
           <Grid item xs={6} md={6}>
-              <Typography>Make sure your camera and microphone are working as intended and click start below to start chatting</Typography>
               {callAccepted && !callEnded ? (
-                <Button variant="contained" color="secondary" startIcon={<PhoneDisabled fontSize="large" />} fullWidth onClick={leaveCall}>
+                
+                
+                <Button className={classes.button} variant="contained" color="secondary" startIcon={<PhoneDisabled fontSize="large" />} fullWidth onClick={leaveCall}>
                   Hang Up
                 </Button>
+                
               ) : (
-                <Button variant="contained" color="primary" startIcon={<Phone fontSize="large" />} fullWidth onClick={initiateCall}>
+                <div>
+                <Typography> Make sure your camera and microphone are working as intended and click start below to start chatting </Typography>
+                <Button className={classes.button} variant="contained" color="primary" startIcon={<Phone fontSize="large" />} fullWidth onClick={initiateCall}>
                   Start
                 </Button>
+                </div>
               )}
           </Grid>
         </form>
