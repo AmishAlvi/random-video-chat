@@ -5,7 +5,9 @@ import Peer from 'simple-peer';
 const SocketContext = createContext();
 
 //const socket = io('http://localhost:5000');
-const socket = io('https://random-video-chat-server.vercel.app/');
+const socket = io('https://random-video-chat-server.vercel.app/', {
+  withCredentials: true
+});
 
 const ContextProvider = ({ children }) => {
   const [callAccepted, setCallAccepted] = useState(false);
