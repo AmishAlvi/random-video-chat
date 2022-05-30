@@ -5,8 +5,10 @@ import Peer from 'simple-peer';
 const SocketContext = createContext();
 
 //const socket = io('http://localhost:5000');
-const socket = io('https://random-video-chat-server.vercel.app/', {
-  withCredentials: true
+const socket = io('https://random-video-chat-backend.herokuapp.com', {
+   //withCredentials: true,
+   //transports: ['websocket'],
+   "transports": ['websocket']
 });
 
 const ContextProvider = ({ children }) => {
