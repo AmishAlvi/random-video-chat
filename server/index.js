@@ -9,6 +9,8 @@ const io = require("socket.io")(server, {
 	}
 });
 
+
+
 app.use(cors());
 
 const PORT = process.env.PORT || 5000;
@@ -17,33 +19,41 @@ app.get('/', (req, res) => {
 	res.send('Server is Running');
 });
 
-users = {};
+usersInCall = {};
+waiting_list = [];
+peer = 0;
+
+
 
 io.on("connection", (socket) => {
 	socket.emit("me", socket.id);
-    if (!users[socket.id]){
-        users[socket.id] = {
-            id : socket.id,
-            call_status : 'free',
-        }
-    }
-    socket.broadcast.emit("users", users);
-    //console.log(users);
 
 	socket.on("disconnect", () => {
-		socket.broadcast.emit("callEnded")
         console.log(socket.id + " disconnected");
-        delete users[socket.id]
-        console.log(users)
-        socket.broadcast.emit("users", users);
 	});
 
-	socket.on("callUser", ({ userToCall, signalData, from, name }) => {
-		io.to(userToCall).emit("callUser", { signal: signalData, from, name });
+	socket.on("endCall", ({from, to}) => {
+		console.log(from + " ended a call with " + usersInCall[from]);
+		io.to(usersInCall[from]).emit('otherDisconnected');
+	})
+
+	socket.on("callUser", ({signalData, from, name}) => {
+		console.log("from: " , from)
+		if(waiting_list.length > 0){
+			userToCall = waiting_list[0]
+			usersInCall[from] = userToCall
+			usersInCall[userToCall] = from
+			io.to(userToCall).emit("callUser", { signal: signalData, from, name });
+			waiting_list.pop();
+		}
+		else {
+			waiting_list.push(from);
+		}
 	});
 
 	socket.on("answerCall", (data) => {
 		io.to(data.to).emit("callAccepted", data.signal)
+		console.log("call accepted from:" + data.to)
 	});
 });
 

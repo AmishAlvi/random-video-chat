@@ -3,48 +3,54 @@ import { Grid, Typography, Paper } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import { SocketContext } from '../SocketContext';
 
-// const useStyles = makeStyles((theme) => ({
-//   video: {
-//     width: '550px',
-//     [theme.breakpoints.down('xs')]: {
-//       width: '300px',
-//     },
-//   },
-//   gridContainer: {
-//     justifyContent: 'center',
-//     [theme.breakpoints.down('xs')]: {
-//       flexDirection: 'column',
-//     },
-//   },
-//   paper: {
-//     padding: '10px',
-//     border: '2px solid black',
-//     margin: '10px',
-//   },
-// }));
+const useStyles = makeStyles((theme) => ({
+  video: {
+    minWidth: '640px',
+    // [theme.breakpoints.down('xs')]: {
+    //   width: '300px',
+    // },
+  },
+  gridContainer: {
+    justifyContent: 'center',
+    // [theme.breakpoints.down('xs')]: {
+    //   flexDirection: 'column',
+    // },
+  },
+  paper: {
+    padding: '10px',
+    border: '2px solid black',
+    margin: '10px',
+    minWidth: '640px',
+  },
+}));
 
 const VideoPlayer = () => {
   const { name, callAccepted, myVideo, userVideo, callEnded, stream, call } = useContext(SocketContext);
-  //const classes = useStyles();
+  const classes = useStyles();
 
   return (
-    <Grid container>
+    <Grid container className={classes.gridContainer}>
       {stream && (
-        <Paper>
+        <Paper className={classes.paper}>
           <Grid item xs={12} md={6}>
-            <Typography variant="h5" gutterBottom>{name || 'Name'}</Typography>
-            <video playsInline muted ref={myVideo} autoPlay/>
+            <Typography variant="h5" gutterBottom>{name || 'You'}</Typography>
+            <video className={classes.video} playsInline muted ref={myVideo} autoPlay/>
           </Grid>
         </Paper>
       )}
-      {callAccepted && !callEnded && (
-        <Paper>
+      {(callAccepted && !callEnded) ?(
+        <Paper className={classes.paper}>
           <Grid item xs={12} md={6}>
-            <Typography variant="h5" gutterBottom>{call.name || 'Name'}</Typography>
-            <video playsInline ref={userVideo} autoPlay/>
+            <Typography variant="h5" gutterBottom>{call.name || 'Other'}</Typography>
+            <video className={classes.video} playsInline ref={userVideo} autoPlay/>
           </Grid>
         </Paper>
-      )}
+      ) : 
+      <Paper className={classes.paper}>
+          <Grid item xs={12} md={6}>
+            <Typography variant="h5" gutterBottom> your partner will appear here </Typography>
+          </Grid>
+        </Paper>}
     </Grid>
   );
 };
