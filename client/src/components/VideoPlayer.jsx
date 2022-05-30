@@ -30,14 +30,14 @@ const VideoPlayer = () => {
 
   return (
     <Grid container className={classes.gridContainer}>
-      {stream && (
+      {stream ? (
         <Paper className={classes.paper}>
           <Grid item xs={12} md={6}>
             <Typography variant="h5" gutterBottom>{name || 'You'}</Typography>
-            <video className={classes.video} playsInline muted ref={myVideo} autoPlay/>
+            <video playsInline muted ref={myVideo} autoPlay className={classes.video} />
           </Grid>
         </Paper>
-      )}
+      ) : null}
       {(callAccepted && !callEnded) ?(
         <Paper className={classes.paper}>
           <Grid item xs={12} md={6}>
