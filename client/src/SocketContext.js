@@ -5,11 +5,7 @@ import Peer from 'simple-peer';
 const SocketContext = createContext();
 
 //const socket = io('http://localhost:5000');
-const socket = io('https://random-video-chat-backend.herokuapp.com', {
-   //withCredentials: true,
-   //transports: ['websocket'],
-   "transports": ['websocket']
-});
+const socket = io('https://random-video-chat-backend.herokuapp.com', { "transports": ['websocket'] });
 
 const ContextProvider = ({ children }) => {
   const [callAccepted, setCallAccepted] = useState(false);
@@ -18,25 +14,11 @@ const ContextProvider = ({ children }) => {
   const [name, setName] = useState('');
   const [call, setCall] = useState({});
   const [me, setMe] = useState('');
-  const [callData, setCallData] = useState(null);
-  const [users, setUsers] = useState({});
   const [searching, setSearching] = useState(false);
 
   const myVideo = useRef();
   const userVideo = useRef();
   const connectionRef = useRef();
-
-  // useEffect(() => {
-  //   const getUserMedia = async () => {
-  //     try {
-  //       const stream = await navigator.mediaDevices.getUserMedia({video: true});
-  //       myVideo.current.srcObject = stream;
-  //     } catch (err) {
-  //       console.log(err);
-  //     }
-  //   };
-  //   getUserMedia();
-  // }, []);
 
   useEffect(() => {
     navigator.mediaDevices.getUserMedia({ video: true, audio: true })
@@ -47,13 +29,11 @@ const ContextProvider = ({ children }) => {
       });
 
     socket.on('me', (id) => setMe(id));
-    socket.on('users', (data) => console.log(data));
-    //console.log(users)
 
     socket.on('callUser', ({ from, name: callerName, signal }) => {
       setCall({ isReceivingCall: true, from, name: callerName, signal });
     });
-  }, []);
+  }, [myVideo.current]);
 
   const answerCall = () => {
     setCallAccepted(true);
@@ -104,13 +84,13 @@ const ContextProvider = ({ children }) => {
     window.location.reload();
   };
 
-  useEffect(() => {
-    socket.on('otherDisconnected', () => {
-      setCallEnded(true);
-      connectionRef.current.destroy();
-      window.location.reload();
-    })
-  }, []);
+  // useEffect(() => {
+  //   socket.on('otherDisconnected', () => {
+  //     setCallEnded(true);
+  //     connectionRef.current.destroy();
+  //     window.location.reload();
+  //   })
+  // }, []);
 
   return (
     <SocketContext.Provider value={{

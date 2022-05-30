@@ -1,6 +1,8 @@
-import React, { useContext } from 'react';
+import React, { useContext} from 'react';
 import { Grid, Typography, Paper } from '@mui/material';
 import { makeStyles } from '@mui/styles';
+
+
 import { SocketContext } from '../SocketContext';
 
 const useStyles = makeStyles((theme) => ({
@@ -33,7 +35,7 @@ const VideoPlayer = () => {
       {stream && (
         <Paper className={classes.paper}>
           <Grid item xs={12} md={6}>
-            <Typography variant="h5" gutterBottom>{name || 'You'}</Typography>
+            <Typography variant="h5" gutterBottom>{name || 'Name'}</Typography>
             <video playsInline muted ref={myVideo} autoPlay className={classes.video} />
           </Grid>
         </Paper>
